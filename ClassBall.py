@@ -6,7 +6,7 @@ class Ball:
         self.x = x
         self.y = y
         self.radius = 42
-        self.color = pygame.image.load('ball.png')
+        self.color = pygame.image.load('images/ball.png')
         self.v0y = 0
         self.vy = 0
         self.vx = 0

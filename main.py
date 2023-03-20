@@ -10,10 +10,8 @@ def Col(points):
     if(IntersectionMasks(frame, faces, ball)):
         #Mostrar el puntaje
         points = points + 1
-
         ball.vy = -random.randint(25, 40)
         ball.vx = random.randint(-9, 9)
-        
         rebote.play()
         
     return points
@@ -56,10 +54,9 @@ boton_rect = pygame.Rect(ANCHO/2 - 100, ALTO/2 - 50, 200, 100)
 jugando = False  # Variable de estado para indicar si se está jugando o no
 
 #sonidos
-start = pygame.mixer.Sound('start.mp3')
-rebote = pygame.mixer.Sound('rebote.mp3')
-
-logo = pygame.image.load('logo.png') #logo
+start = pygame.mixer.Sound('sounds/start.mp3')
+rebote = pygame.mixer.Sound('sounds/rebote.mp3')
+logo = pygame.image.load('images/logo.png') #logo
 
 #contador de puntos
 points = 0
@@ -86,7 +83,6 @@ while True:
 
         ShowStart(logo, startScreen, boton_rect, fuente, AZUL, BLANCO)
 
-    #Pabloooooooo aquiiiiiii 
     if jugando == True:
         # Obtener un fotograma de la cámara
         ret, frame = cap.read()
