@@ -14,6 +14,8 @@ def Col(points):
         ball.vy = -random.randint(25, 40)
         ball.vx = random.randint(-9, 9)
         
+        rebote.play()
+        
     return points
         
 # Inicializar Pygame
