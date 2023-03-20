@@ -22,16 +22,14 @@ def BuscarColor(frame):
     # Encontrar los contornos del objeto amarillo
     contours = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
-    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     for contour in contours:
         area = cv2.contourArea(contour)
         if area > 2000:
             x, y, w, h = cv2.boundingRect(contour)
-            cv2.rectangle(frame, (x + int(w / 12), y + int(h / 8)), (x + int(w * 11 / 12), y + int(h * 2 / 8)), (0, 255, 255), 2)
+            #cv2.rectangle(frame, (x + int(w / 12), y + int(h / 8)), (x + int(w * 11 / 12), y + int(h * 2 / 8)), (0, 255, 255), 2)
             elem.append((x, y, w, h))
 
-    # Mostrar el fotograma
-    #cv2.imshow('Frame', frame)
     return elem
 
 def IntersectionMasks(frame, faces, ball):

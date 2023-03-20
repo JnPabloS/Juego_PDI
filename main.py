@@ -1,7 +1,4 @@
-from ClassBall import Ball
-import random
-import time
-
+from ClassBall import *
 from ProcessImages import *
 from window import *
 
@@ -11,7 +8,7 @@ def Col(points):
         #Mostrar el puntaje
         points = points + 1
         ball.vy = -random.randint(25, 40)
-        ball.vx = random.randint(-9, 9)
+        ball.vx = random.randint(-19, 19)
         rebote.play()
         
     return points
