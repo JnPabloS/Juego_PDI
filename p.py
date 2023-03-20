@@ -1,115 +1,21 @@
-import pygame
 from ClassBall import Ball
-import cv2
-import numpy as np
 import random
 import time
 
-def BuscarColor():
-    
-    # Rango de color amarillo en formato HSV
-    lower = np.array([20, 100, 100])
-    upper = np.array([30, 255, 255])
-    elem = []
-    # Convertir el fotograma a HSV
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+from ProcessImages import *
+from window import *
 
-    # Aplicar la máscara para filtrar el color amarillo
-    mask = cv2.inRange(hsv, lower, upper)
-
-    # Aplicar una operación de erosión y dilatación para eliminar el ruido
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
-    mask = cv2.erode(mask, kernel, iterations=2)
-    mask = cv2.dilate(mask, kernel, iterations=2)
-
-    # Encontrar los contornos del objeto amarillo
-    contours = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    
-    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    for contour in contours:
-        # Dibujar un rectángulo alrededor del objeto rosa
-        x, y, w, h = cv2.boundingRect(contour)
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        elem.append((x,y,w,h))
-
-    # Mostrar el fotograma
-    return elem
-
-def InicioJuego():
-    # Actualizar y dibujar la bola
-    ball.update()
-    ball.draw(screen)
-
-    # Si la bola se sale de la pantalla, reubicarla en la parte superior
-    if ball.y > screen_height + ball.radius:
-        ball.x = random.randint(0, screen_width)
-        ball.y = -150
-        ball.vy = 0
-    
-    if(colision.any()==1):
+def Col(points):
+      
+    if(IntersectionMasks(frame, faces, ball)):
         #Mostrar el puntaje
-        global count
-        count += 1
-        print(count)
-        rebote.play()
-        
+        points = points + 1
+
         ball.vy = -random.randint(25, 40)
         ball.vx = random.randint(-9, 9)
-
-def GenMasks():
-    # Se definen las máscaras
-    face_mask = np.zeros(frame.shape[:2], dtype='uint8')
-    ball_mask = np.zeros(frame.shape[:2], dtype='uint8')
-
-    # Si se detecta al menos un rostro se crean las máscaras 
-    if len(faces) > 0:
-        (x,y,w,h) = faces[0]
         
-        #Ajustes de las coordenadas de las máscaras
-        x1_fmask = x + int(w / 8)
-        x2_fmask = x + int(w * 7 / 8)
-        y1_fmask = y - int(h/12)
-        y2_fmask = y + int(h/12)
-        x_bmask = int(ball.x + ball.radius + 7)
-        y_bmask = int(ball.y + ball.radius + 3)
+    return points
         
-        #cv2.rectangle(frame,(x1_fmask, y1_fmask),(x2_fmask, y2_fmask),(0, 255, 0),1)
-        detectado = True
-        
-        # Se crean las máscaras
-        cv2.circle(ball_mask,(x_bmask, y_bmask),ball.radius ,255 , -1)
-        cv2.rectangle(face_mask, (x1_fmask, y1_fmask),(x2_fmask, y2_fmask),255,-1)
-        face_mask = cv2.flip(face_mask, 1)
-        
-    else:
-        detectado = False
-        
-    return [face_mask, ball_mask]
-            
-def contador_tiempo(frame,Time,pos,fontScale,BLANCO):
-        #Mostrar tiempo y puntaje 
-    
-    tiempo_actual = time.time()
-    tiempo_transcurrido = int(tiempo_finalizacion - tiempo_actual)
-
-    if tiempo_transcurrido >=0:
-        Time = "Tiempo: " + str(tiempo_transcurrido) + " s"
-        tiempo_r = fuente.render(Time,0,BLANCO)
-        screen.blit(tiempo_r,pos)
-        pygame.display.update()
-
-    elif tiempo_transcurrido < 0:
-        Time = "Your Score: " + str(count)
-        fontScale = 70
-        pos = (250,250)
-        tiempo_F = fuente.render(Time,0,BLANCO)
-        screen.blit(tiempo_F,pos)
-        pygame.display.update()
-        
-        ball.x = 0
-        ball.y = 0
-        ball.vy = 0
-    return 
 # Inicializar Pygame
 pygame.init()
 
@@ -122,17 +28,13 @@ screen_width, screen_height = ANCHO, ALTO
 cap = cv2.VideoCapture(0)
 
 # Crear una ventana de Pygame
+startScreen = pygame.display.set_mode((screen_width, screen_height))
 screen = pygame.display.set_mode((screen_width, screen_height))
 
 # Agregar la bola
-x = random.randint(0, screen_width-40)
+x = random.randint(100, 500)
 y = -150
 ball = Ball(x, y)
-
-#Variables inicales para el texto
-pos = (50, 50)
-Time = "Hola"
-fontScale = 30
 
 # Colores
 BLANCO = (255, 255, 255)
@@ -142,7 +44,6 @@ AZUL = (0, 0, 255)
 pygame.init()
 
 # Crear una ventana
-ventana = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("Inicio")
 
 # Crear un objeto Font
@@ -156,10 +57,10 @@ jugando = False  # Variable de estado para indicar si se está jugando o no
 start = pygame.mixer.Sound('start.mp3')
 rebote = pygame.mixer.Sound('rebote.mp3')
 
-#logo
-logo = pygame.image.load('logo.png')
+logo = pygame.image.load('logo.png') #logo
 
 #contador de puntos
+points = 0
 
 while True:
     
@@ -179,50 +80,31 @@ while True:
                 tiempo_inicial = time.time()
                 tiempo_finalizacion = tiempo_inicial + tiempo
                 jugando = True
+                pygame.display.set_caption("Yellow Ball")
 
-        #Logo 
-        logo_rect = logo.get_rect()
-        logo_rect.centerx = ventana.get_rect().centerx
-        ventana.blit(logo, logo_rect)
-
-        # Dibujar el botón
-        pygame.draw.rect(ventana, AZUL, boton_rect)
-        texto = fuente.render("Start", True, BLANCO)
-        texto_rect = texto.get_rect(center=boton_rect.center)
-        ventana.blit(texto, texto_rect)
-
-        # Actualizar la pantalla
-        pygame.display.update()
+        ShowStart(logo, startScreen, boton_rect, fuente, AZUL, BLANCO)
 
     #Pabloooooooo aquiiiiiii 
     if jugando == True:
         # Obtener un fotograma de la cámara
-        ret, frame1 = cap.read()
-        frame = cv2.flip(frame1, 1)
+        ret, frame = cap.read()
     
-        contador_tiempo(frame,Time,pos,fontScale,BLANCO)
-        faces = BuscarColor()
-
-        # Convertir el fotograma a un formato compatible con Pygame
-        bckgd = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        bckgd = np.rot90(bckgd)
-        bckgd = pygame.surfarray.make_surface(bckgd)
-
-        # Mostrar el fotograma en el fondo de la ventana
-        screen.blit(bckgd, (0, 0))
+        # Mostrar tiempo y puntaje en pantalla
+        ShowText(screen, BLANCO, ball, tiempo_finalizacion, points)
         
-        [face_mask, ball_mask] = GenMasks()
-        
-        colision = cv2.bitwise_and(face_mask, face_mask, mask=ball_mask)
-        
-        InicioJuego()
+        # Identifica objetos de color amarillo
+        faces = BuscarColor(frame)
 
-        punt = pygame.font.Font(None,fontScale)
-        puntaje = fuente.render(str(count),0,BLANCO)
-        screen.blit(puntaje,(350,50))
+        
+        # Poner la imagen de la cámara en el fondo de la ventana
+        SetBackground(frame, screen)
+        
+        # Actualizar la ventana
+        UpdateWindow(ball, screen, screen_height)
+        
+        # Actualizar los puntos
+        points = Col(points)
 
-        # Actualizar la ventana de Pygame
-        pygame.display.update()
 
         # Esperar a que el usuario presione una tecla para salir
         for event in pygame.event.get():
