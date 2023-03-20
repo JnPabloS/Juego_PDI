@@ -43,7 +43,6 @@ def IntersectionMasks(frame, faces, ball):
         (x,y,w,h) = faces[0]
         
         #Ajustes de las coordenadas de las máscaras
-        
         x1_fmask = x + int(w / 12)
         x2_fmask = x + int(w * 11 / 12)
         y1_fmask = y + int(h / 8)
@@ -65,7 +64,6 @@ def IntersectionMasks(frame, faces, ball):
     colision = cv2.bitwise_and(face_mask, face_mask, mask=ball_mask)
     
     if(colision.any()==1):
-        #Mostrar el puntaje
         return True
 
     return False

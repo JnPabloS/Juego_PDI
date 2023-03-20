@@ -15,7 +15,7 @@ def SetBackground(frame, screen):
     screen.blit(bckgd, (0, 0))
 
 def ShowStart (logo, ventana, boton_rect, fuente, color1, color2):
-    #Logo 
+        #Logo 
         logo_rect = logo.get_rect()
         logo_rect.centerx = ventana.get_rect().centerx
         ventana.blit(logo, logo_rect)
@@ -55,7 +55,6 @@ def ShowText(screen, color, ball, tiempo_finalizacion, points):
         pos = (150,300)
         text = font.render(Text, True, color)
         screen.blit(text, pos)
-        #cv2.putText(frame, Text, pos, cv2.FONT_HERSHEY_PLAIN, fontScale, BLANCO, 2)
         ball.x = 0
         ball.y = 0
         ball.vy = 0
@@ -70,8 +69,8 @@ def UpdateWindow(ball, screen, screen_height):
 
     # Si la bola se sale de la pantalla pierde
     if ball.y > screen_height + ball.radius:
-        ball.x = random.randint(100, 500)
-        ball.y = -150
-        ball.vy = -random.randint(25, 40)
-        ball.vx = random.randint(-19, 19)
+        ball.x = random.randint(200, 400)
+        ball.y = -50
+        ball.vy = 0
+        ball.vx = random.randint(-10, 10)
     

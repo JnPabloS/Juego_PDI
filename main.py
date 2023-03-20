@@ -30,7 +30,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 
 # Agregar la bola
 x = random.randint(100, 500)
-y = -150
+y = -50
 ball = Ball(x, y)
 
 # Colores
@@ -71,7 +71,6 @@ while True:
         elif evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
             if boton_rect.collidepoint(evento.pos):
                 start.play()
-                count = 0
                 tiempo = 15
                 tiempo_inicial = time.time()
                 tiempo_finalizacion = tiempo_inicial + tiempo
@@ -83,23 +82,21 @@ while True:
     if jugando == True:
         # Obtener un fotograma de la cámara
         ret, frame = cap.read()
-    
-        # Mostrar tiempo y puntaje en pantalla
-        ShowText(screen, BLANCO, ball, tiempo_finalizacion, points)
         
         # Identifica objetos de color amarillo
         faces = BuscarColor(frame)
-
-        
+    
         # Poner la imagen de la cámara en el fondo de la ventana
         SetBackground(frame, screen)
+        
+        # Mostrar tiempo y puntaje en pantalla
+        ShowText(screen, BLANCO, ball, tiempo_finalizacion, points)
         
         # Actualizar la ventana
         UpdateWindow(ball, screen, screen_height)
         
         # Actualizar los puntos
         points = Col(points)
-
 
         # Esperar a que el usuario presione una tecla para salir
         for event in pygame.event.get():
