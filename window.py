@@ -1,9 +1,8 @@
+import random
 import time
 import cv2
 import numpy as np
 import pygame
-
-from ProcessImages import IntersectionMasks
 
 def SetBackground(frame, screen):
     
@@ -71,7 +70,8 @@ def UpdateWindow(ball, screen, screen_height):
 
     # Si la bola se sale de la pantalla pierde
     if ball.y > screen_height + ball.radius:
-        ball.x = 300
+        ball.x = random.randint(100, 500)
         ball.y = -150
-        ball.vy = 0
+        ball.vy = -random.randint(25, 40)
+        ball.vx = random.randint(-19, 19)
     
