@@ -5,28 +5,23 @@ class Ball:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.radius = 40
+        self.radius = 42
         self.color = pygame.image.load('ball.png')
         self.v0y = 0
-        self.vy = 6
+        self.vy = 0
         self.vx = 0
-        #self.t =datetime.now()
 
-    def update(self):
+    def update(self):        
+        g = 4
         
-        #tf = datetime.now()
-        #tiempo = tf - self.t # Devuelve un objeto timedelta
-        #s = tiempo.seconds
-        
-        #g = 10
-        
-        #self.vy = self.v0y * s + 1/2 * g * s**2
-        #self.y = self.vy * s
+        self.vy = self.vy + 1/2 * g
         self.y += self.vy
-        #print(s)
-        #print(self.x , "     ", self.y)
-        #self.x += self.vx 
+        self.x += self.vx 
+        
+        if ((self.x > 600 - self.radius and self.vx > 0) or (self.x < - 40 + self.radius and self.vx < 0)) :
+            print("rebote: ", self.x)
+            self.vx = -self.vx
 
     def draw(self, screen):
+        #pygame.draw.circle(screen, (255, 0, 0), (self.x+self.radius+7, int(self.y+self.radius+3)), self.radius)
         screen.blit(self.color, (self.x, self.y))
-        #pygame.draw.circle(screen, (255, 0, 0), (self.x, int(self.y)), self.radius)
