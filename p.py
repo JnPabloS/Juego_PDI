@@ -10,6 +10,7 @@ def Col(points):
     if(IntersectionMasks(frame, faces, ball)):
         #Mostrar el puntaje
         points = points + 1
+
         ball.vy = -random.randint(25, 40)
         ball.vx = random.randint(-9, 9)
         
@@ -52,7 +53,10 @@ fuente = pygame.font.SysFont(None, 50)
 boton_rect = pygame.Rect(ANCHO/2 - 100, ALTO/2 - 50, 200, 100)
 jugando = False  # Variable de estado para indicar si se está jugando o no
 
-start = pygame.mixer.Sound('start.mp3')  #sonido de start
+#sonidos
+start = pygame.mixer.Sound('start.mp3')
+rebote = pygame.mixer.Sound('rebote.mp3')
+
 logo = pygame.image.load('logo.png') #logo
 
 #contador de puntos
@@ -66,11 +70,13 @@ while True:
         if evento.type == pygame.QUIT:
             pygame.quit()
             quit()
+
         # Detectar si se hace clic en el botón
         elif evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
             if boton_rect.collidepoint(evento.pos):
                 start.play()
-                tiempo = 30
+                count = 0
+                tiempo = 15
                 tiempo_inicial = time.time()
                 tiempo_finalizacion = tiempo_inicial + tiempo
                 jugando = True
@@ -88,6 +94,7 @@ while True:
         
         # Identifica objetos de color amarillo
         faces = BuscarColor(frame)
+
         
         # Poner la imagen de la cámara en el fondo de la ventana
         SetBackground(frame, screen)
@@ -97,6 +104,7 @@ while True:
         
         # Actualizar los puntos
         points = Col(points)
+
 
         # Esperar a que el usuario presione una tecla para salir
         for event in pygame.event.get():
