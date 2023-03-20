@@ -10,7 +10,7 @@ def BuscarColor():
     # Rango de color amarillo en formato HSV
     lower = np.array([20, 100, 100])
     upper = np.array([30, 255, 255])
-    
+    elem = []
     # Convertir el fotograma a HSV
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
@@ -30,10 +30,11 @@ def BuscarColor():
         # Dibujar un rectángulo alrededor del objeto rosa
         x, y, w, h = cv2.boundingRect(contour)
         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        elem.append((x,y,w,h))
 
     # Mostrar el fotograma
     #cv2.imshow('Frame', frame)
-    return 0
+    return elem
 
 def InicioJuego():
     # Actualizar y dibujar la bola
@@ -47,7 +48,10 @@ def InicioJuego():
         ball.vy = 0
     
     if(colision.any()==1):
-        count +=1 
+        #Mostrar el puntaje
+        #count = count + 1
+        #cv2.putText(frame, "Puntos:" + str(count), (50,20), cv2.FONT_HERSHEY_PLAIN, 2, BLANCO, 2) 
+        
         ball.vy = -random.randint(25, 40)
         ball.vx = random.randint(-9, 9)
 
@@ -88,7 +92,7 @@ def contador_tiempo(frame,Time,pos,fontScale,BLANCO):
     tiempo_transcurrido = int(tiempo_finalizacion - tiempo_actual)
 
     if tiempo_transcurrido >=0:
-        Time = "Tiempo: " + str(tiempo_transcurrido) + " segundos"
+        Time = "Tiempo: " + str(tiempo_transcurrido) + " s"
         cv2.putText(frame, Time, pos, cv2.FONT_HERSHEY_PLAIN, fontScale, BLANCO, 2)
 
     elif tiempo_transcurrido < 0:
@@ -96,7 +100,9 @@ def contador_tiempo(frame,Time,pos,fontScale,BLANCO):
         fontScale = 3
         pos = (150,300)
         cv2.putText(frame, Time, pos, cv2.FONT_HERSHEY_PLAIN, fontScale, BLANCO, 2)
-        balls = []
+        ball.x = 0
+        ball.y = 0
+        ball.vy = 0
 
 # Inicializar Pygame
 pygame.init()
@@ -110,7 +116,8 @@ screen_width, screen_height = ANCHO, ALTO
 cap = cv2.VideoCapture(0)
 
 # Cargar el clasificador de rostros
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+#face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+#face_cascade = BuscarColor()
 
 # Crear una ventana de Pygame
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -149,7 +156,9 @@ start = pygame.mixer.Sound('start.mp3')
 #logo
 logo = pygame.image.load('logo.png')
 
+#contador de puntos
 count = 0
+
 while True:
     
     # Obtener eventos
@@ -162,7 +171,7 @@ while True:
         elif evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
             if boton_rect.collidepoint(evento.pos):
                 start.play()
-                tiempo = 20
+                tiempo = 30
                 tiempo_inicial = time.time()
                 tiempo_finalizacion = tiempo_inicial + tiempo
                 jugando = True
@@ -188,7 +197,7 @@ while True:
         frame = cv2.flip(frame1, 1)
     
         contador_tiempo(frame,Time,pos,fontScale,BLANCO)
-        BuscarColor()
+        faces = BuscarColor()
 
         # Convertir el fotograma a un formato compatible con Pygame
         bckgd = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -200,7 +209,7 @@ while True:
         
         # Detectar rostros en el fotograma
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+        #faces = face_cascade.detectMultiScale(gray, 1.3, 5)
         
         [face_mask, ball_mask] = GenMasks()
         
