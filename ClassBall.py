@@ -19,7 +19,6 @@ class Ball:
         self.x += self.vx 
         
         if ((self.x > 600 - self.radius and self.vx > 0) or (self.x < - 40 + self.radius and self.vx < 0)) :
-            print("rebote: ", self.x)
             self.vx = -self.vx
 
     def draw(self, screen):
