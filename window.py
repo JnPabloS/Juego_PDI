@@ -14,8 +14,11 @@ def SetBackground(frame, screen):
     # Mostrar el fotograma en el fondo de la ventana
     screen.blit(bckgd, (0, 0))
 
-def ShowStart (logo, ventana, boton_rect, fuente, color1, color2):
-    #Logo 
+def ShowStart (fondo, logo, ventana, boton_rect, fuente, color1, color2):
+        
+        ventana.blit(fondo,(0,0))
+
+        #Logo 
         logo_rect = logo.get_rect()
         logo_rect.centerx = ventana.get_rect().centerx
         ventana.blit(logo, logo_rect)
@@ -30,35 +33,39 @@ def ShowStart (logo, ventana, boton_rect, fuente, color1, color2):
         pygame.display.update()
 
 def ShowText(screen, color, ball, tiempo_finalizacion, points):
-    #Mostrar tiempo y puntaje 
-    
     # Crea una fuente de texto y renderiza el texto que quieres mostrar
-    font = pygame.font.SysFont('Arial', 32)
+    font = pygame.font.Font('fonts/ARCO.ttf', 22)
     
     tiempo_actual = time.time()
     tiempo_transcurrido = int(tiempo_finalizacion - tiempo_actual)
 
     if tiempo_transcurrido >=0:
-        Text = "Tiempo: " + str(tiempo_transcurrido) + " s"
+        Text = "Tiempo: " + str(tiempo_transcurrido) + " s     "
         text = font.render(Text, True, color)
         pos = (50, 50)
         screen.blit(text, pos)
         
-        Text = "Puntos:" + str(points)
+        Text = "      Puntos:" + str(points)
         text = font.render(Text, True, color)
         pos = (200, 50)
         screen.blit(text, pos)
 
 
     elif tiempo_transcurrido < 0:
+        carmesi = (165, 28, 48)
         Text = "Tiempo Agotado"
-        pos = (150,300)
-        text = font.render(Text, True, color)
+        pos = (200,250)
+        text = font.render(Text, True, carmesi)
+        puntuacion = font.render("Puntuación: " + str(points), True, carmesi)
+        reestar = font.render("Press R to re-Start", True, carmesi)
         screen.blit(text, pos)
-        #cv2.putText(frame, Text, pos, cv2.FONT_HERSHEY_PLAIN, fontScale, BLANCO, 2)
+        screen.blit(puntuacion, (210,270))
+        screen.blit(reestar,(170,290))
+        pygame.mixer.music.stop()
         ball.x = 0
         ball.y = 0
         ball.vy = 0
+        jugando = False
 
     pygame.display.flip()
     
