@@ -44,20 +44,22 @@ pygame.init()
 pygame.display.set_caption("Inicio")
 
 # Crear un objeto Font
-fuente = pygame.font.SysFont(None, 50)
+fuente = pygame.font.Font('fonts/ARCO.ttf', 50)
 
 # Crear un rectángulo para el botón de "start"
 boton_rect = pygame.Rect(ANCHO/2 - 100, ALTO/2 - 50, 200, 100)
 jugando = False  # Variable de estado para indicar si se está jugando o no
 
-#sonidos
+#sonidos e imagenes
 start = pygame.mixer.Sound('sounds/start.mp3')
 rebote = pygame.mixer.Sound('sounds/rebote.mp3')
+sounstrack = pygame.mixer.music.load('sounds/soundtrack.mp3')
 logo = pygame.image.load('images/logo.png') #logo
+fondo = pygame.image.load('images/fondo.jpg')
+playing_music = False
 
 #contador de puntos
 points = 0
-
 while True:
     
     # Obtener eventos
@@ -71,13 +73,20 @@ while True:
         elif evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
             if boton_rect.collidepoint(evento.pos):
                 start.play()
-                tiempo = 15
+                count = 0
+                tiempo = 20
                 tiempo_inicial = time.time()
                 tiempo_finalizacion = tiempo_inicial + tiempo
                 jugando = True
                 pygame.display.set_caption("Yellow Ball")
+                if not playing_music:
+                    # Start playing music
+                    pygame.mixer.music.play(-1)
+                    playing_music = True
+                    pygame.mixer.music.set_volume(0.5)
 
-        ShowStart(logo, startScreen, boton_rect, fuente, AZUL, BLANCO)
+
+        ShowStart(fondo,logo, startScreen, boton_rect, fuente, AZUL, BLANCO)
 
     if jugando == True:
         # Obtener un fotograma de la cámara
@@ -105,3 +114,15 @@ while True:
                     cap.release()
                     pygame.quit()
                     quit()
+                elif event.key == pygame.K_r:
+                        count = 0
+                        x = random.randint(100, 500)
+                        y = -150
+                        points = 0
+                        tiempo = 20
+                        tiempo_inicial = time.time()
+                        tiempo_finalizacion = tiempo_inicial + tiempo
+                        jugando = True
+                        pygame.mixer.music.play(-1)
+                        playing_music = True
+                        pygame.mixer.music.set_volume(0.5)
