@@ -21,3 +21,6 @@ class Ball:
 
     def draw(self, screen):
         screen.blit(self.color, (self.x, self.y))
+        
+        # Actualizar la pantalla
+        pygame.display.flip()
