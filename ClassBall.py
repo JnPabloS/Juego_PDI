@@ -1,5 +1,4 @@
 import pygame
-#from datetime import datetime
 
 class Ball:
     def __init__(self, x, y):
@@ -11,9 +10,8 @@ class Ball:
         self.vy = 0
         self.vx = 0
 
-    def update(self):        
+    def update(self):  
         g = 4
-        
         self.vy = self.vy + 1/2 * g
         self.y += self.vy
         self.x += self.vx 
@@ -22,5 +20,4 @@ class Ball:
             self.vx = -self.vx
 
     def draw(self, screen):
-        #pygame.draw.circle(screen, (255, 0, 0), (self.x+self.radius+7, int(self.y+self.radius+3)), self.radius)
         screen.blit(self.color, (self.x, self.y))

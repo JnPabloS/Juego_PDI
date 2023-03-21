@@ -14,6 +14,7 @@ def SetBackground(frame, screen):
     # Mostrar el fotograma en el fondo de la ventana
     screen.blit(bckgd, (0, 0))
 
+
 def ShowStart (fondo, logo, ventana, boton_rect, fuente, color1, color2):
         
         ventana.blit(fondo,(0,0))
@@ -59,6 +60,7 @@ def ShowText(screen, color, ball, tiempo_finalizacion, points):
         puntuacion = font.render("Puntuación: " + str(points), True, carmesi)
         reestar = font.render("Press R to re-Start", True, carmesi)
         screen.blit(text, pos)
+
         screen.blit(puntuacion, (210,270))
         screen.blit(reestar,(170,290))
         pygame.mixer.music.stop()
@@ -77,8 +79,8 @@ def UpdateWindow(ball, screen, screen_height):
 
     # Si la bola se sale de la pantalla pierde
     if ball.y > screen_height + ball.radius:
-        ball.x = random.randint(100, 500)
-        ball.y = -150
-        ball.vy = -random.randint(25, 40)
-        ball.vx = random.randint(-19, 19)
+        ball.x = random.randint(200, 400)
+        ball.y = -50
+        ball.vy = 0
+        ball.vx = random.randint(-10, 10)
     
