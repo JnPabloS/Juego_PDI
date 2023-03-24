@@ -1,9 +1,10 @@
+import random
 import pygame
 
 class Ball:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    def __init__(self):
+        self.x = random.randint(100, 500)
+        self.y = -50
         self.radius = 42
         self.color = pygame.image.load('images/ball.png')
         self.v0y = 0
@@ -24,3 +25,6 @@ class Ball:
         
         # Actualizar la pantalla
         pygame.display.flip()
+        
+    def __del__(self):
+        self.y = 600

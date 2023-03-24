@@ -4,6 +4,26 @@ import cv2
 import numpy as np
 import pygame
 
+from ClassBall import Ball
+
+def ShowStart (fondo, logo, ventana, boton_rect, fuente, color1, color2):
+
+    ventana.blit(fondo,(0,0))
+
+    #Logo 
+    logo_rect = logo.get_rect()
+    logo_rect.centerx = ventana.get_rect().centerx
+    ventana.blit(logo, logo_rect)
+
+    # Dibujar el botón
+    pygame.draw.rect(ventana, color1, boton_rect)
+    texto = fuente.render("Start", True, color2)
+    texto_rect = texto.get_rect(center=boton_rect.center)
+    ventana.blit(texto, texto_rect)
+
+    # Actualizar la pantalla
+    pygame.display.update()
+        
 def SetBackground(frame, screen):
     
     # Convertir el fotograma a un formato compatible con Pygame
@@ -14,62 +34,59 @@ def SetBackground(frame, screen):
     # Mostrar el fotograma en el fondo de la ventana
     screen.blit(bckgd, (0, 0))
 
-
-def ShowStart (fondo, logo, ventana, boton_rect, fuente, color1, color2):
+def StartGame(playing_music):  
+    count = 0
+    tiempo = 20
+    tiempo_inicial = time.time()
+    tiempo_finalizacion = tiempo_inicial + tiempo
+    jugando = True
+    # Agregar la bola
+    ball = Ball()
+    
+    if not playing_music:
+        # Start playing music
+        pygame.mixer.music.play(-1)
+        playing_music = True
+        pygame.mixer.music.set_volume(0.5)
         
-        ventana.blit(fondo,(0,0))
+    return [count, ball, tiempo, tiempo_inicial, tiempo_finalizacion, jugando, playing_music]
 
-        #Logo 
-        logo_rect = logo.get_rect()
-        logo_rect.centerx = ventana.get_rect().centerx
-        ventana.blit(logo, logo_rect)
 
-        # Dibujar el botón
-        pygame.draw.rect(ventana, color1, boton_rect)
-        texto = fuente.render("Start", True, color2)
-        texto_rect = texto.get_rect(center=boton_rect.center)
-        ventana.blit(texto, texto_rect)
+def ShowText(screen, color, tiempo_transcurrido, points):
+    # Crea una fuente de texto y renderiza el texto que quieres mostrar
+    font = pygame.font.Font('fonts/ARCO.ttf', 22)
 
-        # Actualizar la pantalla
-        pygame.display.update()
+    Text = "Tiempo: " + str(tiempo_transcurrido) + " s     "
+    text = font.render(Text, True, color)
+    pos = (50, 50)
+    screen.blit(text, pos)
+    
+    Text = "      Puntos: " + str(points)
+    text = font.render(Text, True, (165, 28, 48))
+    pos = (400, 50)
+    screen.blit(text, pos)
 
-def ShowText(screen, color, ball, tiempo_finalizacion, points):
+def ShowFinal(screen, ball, points):
+    
+    pygame.display.update()
+    ball.__del__()
     # Crea una fuente de texto y renderiza el texto que quieres mostrar
     font = pygame.font.Font('fonts/ARCO.ttf', 22)
     
-    tiempo_actual = time.time()
-    tiempo_transcurrido = int(tiempo_finalizacion - tiempo_actual)
+    carmesi = (165, 28, 48)
+    Text = "Tiempo Agotado"
+    pos = (200,200)
+    text = font.render(Text, True, carmesi)
+    puntuacion = font.render("Puntuación: " + str(points), True, (0, 0, 255))
+    reestar = font.render("Press R to re-Start", True, carmesi)
+    screen.blit(text, pos)
 
-    if tiempo_transcurrido >=0:
-        Text = "Tiempo: " + str(tiempo_transcurrido) + " s     "
-        text = font.render(Text, True, color)
-        pos = (50, 50)
-        screen.blit(text, pos)
-        
-        Text = "      Puntos:" + str(points)
-        text = font.render(Text, True, color)
-        pos = (200, 50)
-        screen.blit(text, pos)
-
-
-    elif tiempo_transcurrido < 0:
-        carmesi = (165, 28, 48)
-        Text = "Tiempo Agotado"
-        pos = (200,250)
-        text = font.render(Text, True, carmesi)
-        puntuacion = font.render("Puntuación: " + str(points), True, carmesi)
-        reestar = font.render("Press R to re-Start", True, carmesi)
-        screen.blit(text, pos)
-
-        screen.blit(puntuacion, (210,270))
-        screen.blit(reestar,(170,290))
-        pygame.mixer.music.stop()
-        ball.x = 0
-        ball.y = 0
-        ball.vy = 0
-        jugando = False
+    screen.blit(puntuacion, (210,250))
+    screen.blit(reestar,(170,400))
 
     pygame.display.flip()
+    
+    return True
     
 def UpdateWindow(ball, screen, screen_height):
   
@@ -78,9 +95,19 @@ def UpdateWindow(ball, screen, screen_height):
     ball.draw(screen)
 
     # Si la bola se sale de la pantalla pierde
-    if ball.y > screen_height + ball.radius:
+    if ball.y > screen_height + 2 * ball.radius:
         ball.x = random.randint(200, 400)
         ball.y = -50
         ball.vy = 0
         ball.vx = random.randint(-10, 10)
+        
+def ItsOver(tiempo_finalizacion):
     
+    tiempo_actual = time.time()
+    tiempo_transcurrido = int(tiempo_finalizacion - tiempo_actual)
+    
+    if tiempo_transcurrido >=0:
+        return [True, tiempo_transcurrido]
+    
+    else:
+        return [False, 0]
