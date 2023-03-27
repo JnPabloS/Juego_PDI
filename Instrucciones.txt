@@ -1,0 +1,15 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INSTRUCCIONES YELLOW-BALL %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%														  %
+% 1- Utilizar una cinta amarilla en la frente, la cual se usará para reconocer su cabeza en el procesado.         %
+%														  %
+% 2- Situese en un lugar con una iluminación adecuada para que la cámara de su computador pueda reconocerlo,	  %
+%    y preferiblemente en un lugar con un fondo de color liso que no sea amarillo				  %
+% 3- Inicie el juego.												  %
+%														  %
+% 4- Se generaran balones de forma aleatoria en la parte de arriba de la pantalla, trate de golpearlas con        %
+%    su cabeza, cada dominada equivale a un punto, tendrá 20 segundos para hacer la mayor cantidad de puntos.     %
+%														  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
