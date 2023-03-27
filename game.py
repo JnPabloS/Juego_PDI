@@ -1,8 +1,13 @@
+#------------------------------------------------------------------------------------------------
+#--1. Inicializo el sistema ---------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------
+
 import time
 from ClassBall import *
 from ProcessImages import IntersectionMasks
 
-# Se definen todas las variables para iniciar a jugar
+#---- Se definen todas las variables para iniciar a jugar ---------------------------------------
+
 def StartGame(playing_music):  
     count = 0
     tiempo = 20
@@ -21,7 +26,8 @@ def StartGame(playing_music):
         
     return [count, ball, tiempo, tiempo_inicial, tiempo_finalizacion, jugando, playing_music]
 
-# Si hay colision se actualizan los puntos
+#---- Si hay colision se actualizan los puntos -------------------------------------------------------
+
 def Col(points, frame, faces, ball, rebote):
       
     if(IntersectionMasks(frame, faces, ball) and ball.vy > 0):
@@ -33,7 +39,8 @@ def Col(points, frame, faces, ball, rebote):
         
     return points
 
-# Se verifica el tiempo de juego
+#---- Se verifica el tiempo de juego------------------------------------------------------------------
+
 def ItsOver(tiempo_finalizacion):
     
     tiempo_actual = time.time()

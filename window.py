@@ -1,9 +1,14 @@
+#------------------------------------------------------------------------------------------------
+#--1. Inicializo el sistema ---------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------
+
 import random
 import cv2
 import numpy as np
 import pygame
 
-# Muestra la ventana de inico 
+#---- Muestra la ventana de inico ---------------------------------------------------------------
+
 def ShowStart (fondo, logo, ventana, boton_rect, fuente, color1, color2):
 
     ventana.blit(fondo,(0,0))
@@ -22,7 +27,8 @@ def ShowStart (fondo, logo, ventana, boton_rect, fuente, color1, color2):
     # Actualizar la pantalla
     pygame.display.update()
         
-# Actualiza la imagen de fondo
+#---- Actualiza la imagen de fondo --------------------------------------------------------------
+
 def SetBackground(frame, screen):
     
     # Convertir el fotograma a un formato compatible con Pygame
@@ -33,7 +39,8 @@ def SetBackground(frame, screen):
     # Mostrar el fotograma en el fondo de la ventana
     screen.blit(bckgd, (0, 0))
 
-# Muestra el tiempo de juego y puntos en la pantalla
+#---- Muestra el tiempo de juego y puntos en la pantalla -----------------------------------------
+
 def ShowText(screen, color, tiempo_transcurrido, points):
     # Crea una fuente de texto y renderiza el texto que quieres mostrar
     font = pygame.font.Font('fonts/ARCO.ttf', 22)
@@ -48,7 +55,8 @@ def ShowText(screen, color, tiempo_transcurrido, points):
     pos = (400, 50)
     screen.blit(text, pos)
 
-# Muestra los resultados una vez se termina el juego
+#---- Muestra los resultados una vez se termina el juego -------------------------------------------
+
 def ShowFinal(screen, ball, points):
     
     pygame.display.update()
@@ -71,7 +79,7 @@ def ShowFinal(screen, ball, points):
     
     return True
     
-# Actualiza la posicion de la bola en la pantalla
+#---- Actualiza la posicion de la bola en la pantalla --------------------------------------------------------
 def UpdateWindow(ball, screen, screen_height):
   
     # Actualizar y dibujar la bola

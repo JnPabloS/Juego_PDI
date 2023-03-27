@@ -1,41 +1,64 @@
+#-------------------------------------------------------------------------------------------------
+#------- Juego Yellow Ball -----------------------------------------------------------------------
+#------- Coceptos básicos de PDI------------------------------------------------------------------
+#------- Por: Marina Paniagua Lopera  mariana.paniagual@udea.edu.co ------------------------------
+#-------      Juan Pablo Sepúlveda Sánchez  juanp.sepulveda@udea.edu.co---------------------------
+#------- Presentado a: David Stephen Fernández MC CAN --------------------------------------------
+#-------      Profesor Facultad de Ingenieria BLQ 21-409  ----------------------------------------
+#-------      CC 71629489, Tel 2198528,  Wpp 3007106588 ------------------------------------------
+#------- Curso Básico de Procesamiento de Imágenes y Visión Artificial----------------------------
+#------- Marzo de 2023----------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------------------------
+#--1. Inicializo el sistema ----------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------
+
 from ProcessImages import *
 from game import *
 from window import *
 
-#################################################################################
-#                       INICIALIZACION DE VARIABLES
-#################################################################################
+#---- Inicializar Pygame ------------------------------------------------------------------------
 
-# Inicializar Pygame
 pygame.init()
 
-# Definir la resolución de la ventana
+#-------------------------------------------------------------------------------------------------
+#--2. Inicializo las variables y funciones del juego ---------------------------------------------
+#-------------------------------------------------------------------------------------------------
+
+#---- Definir la resolución de la ventana -------------------------------------------------------
+
 ANCHO = 640
 ALTO = 480
 screen_width, screen_height = ANCHO, ALTO
 
-# Inicializar la cámara
+#---- Inicializar la cámara ---------------------------------------------------------------------
 cap = cv2.VideoCapture(0)
 
-# Crear ventana de start
+#---- Crear ventana de start --------------------------------------------------------------------
+
 startScreen = pygame.display.set_mode((screen_width, screen_height))
 
-# Crear ventana de juego
+#---- Crear ventana de juego --------------------------------------------------------------------
+
 screen = pygame.display.set_mode((screen_width, screen_height))
 
-# Colores
+#---- Colores -----------------------------------------------------------------------------------
+
 BLANCO = (255, 255, 255)
 NEGRO = (0, 0, 0)
 AZUL = (0, 0, 255)
 ROJO = (255, 0, 0)
 
-# Titulo de la ventana
+#---- Titulo de la ventana ---------------------------------------------------------------------
+
 pygame.display.set_caption("Yelow Ball")
 
-# Crear un objeto Font
+#---- Crear un objeto Font-----------------------------------------------------------------------
 fuente = pygame.font.Font('fonts/ARCO.ttf', 50)
 
-# Crear un rectángulo para el botón de "start"
+#---- Crear un rectángulo para el botón de "start" ----------------------------------------------
+
 boton_rect = pygame.Rect(ANCHO/2 - 100, ALTO/2 + 20, 200, 100)
 
 
@@ -44,7 +67,8 @@ jugando = False  # Variable de estado para indicar si se está jugando o no
 finalizado = False
 tiempo_inicial = 0
 
-#sonidos e imagenes
+#---- Sonidos e imagenes--------------------------------------------------------------------------
+
 start = pygame.mixer.Sound('sounds/start.mp3')
 rebote = pygame.mixer.Sound('sounds/rebote.mp3')
 sounstrack = pygame.mixer.music.load('sounds/soundtrack.mp3')
@@ -52,16 +76,19 @@ logo = pygame.image.load('images/logo.png') #logo
 fondo = pygame.image.load('images/fondo.jpg')
 playing_music = False
 
-#contador de puntos
+#---- contador de puntos -------------------------------------------------------------------------
+
 points = 0
 
 
-#################################################################################
-#                               INICIO DEL JUEGO
-#################################################################################
+#-------------------------------------------------------------------------------------------------
+#------------------------------------ INICIO DEL JUEGO -------------------------------------------
+#-------------------------------------------------------------------------------------------------
 
 while True:
-    #Mostrar ventana de inicio si apenas se abre el juego
+
+#---- Mostrar ventana de inicio si apenas se abre el juego ---------------------------------------
+
     if inicio:
         ShowStart(fondo,logo, startScreen, boton_rect, fuente, AZUL, BLANCO)
         inicio = False
@@ -88,14 +115,16 @@ while True:
         # Verificar si hay colision para actualizar los puntos
         points = Col(points, frame, objects, ball, rebote)
 
-    #Mostrar pantalla de juego finalizado
+#---- Mostrar pantalla de juego finalizado ------------------------------------------------------
+
     elif ~jugando and tiempo_inicial != 0 and ~finalizado:  
         # Poner la imagen de la cámara en el fondo de la ventana
         SetBackground(frame, screen) 
         finalizado = ShowFinal(screen, ball, points)
         tiempo_inicial = 0
     
-    # Obtener eventos de teclas o botones
+#---- Obtener eventos de teclas o botones ------------------------------------------------------
+
     for event in pygame.event.get():
           
         # Salir del programa si se cierra la ventana
@@ -123,3 +152,6 @@ while True:
                 finalizado = False
                 points, ball, tiempo, tiempo_inicial, tiempo_finalizacion, jugando, playing_music = StartGame(playing_music) 
     
+#---------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------  FIN DEL PROGRAMA --------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------

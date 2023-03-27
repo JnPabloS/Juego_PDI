@@ -1,7 +1,15 @@
+#-------------------------------------------------------------------------------------------
+#--1. Inicializo el sistema ----------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
+
 import cv2
 import numpy as np
 
-# Busca los objetos que tengan un color dentro del rango definido
+#-------------------------------------------------------------------------------------------
+#-- 2. Función para detectar el color amarillo y los bordes del objeto  --------------------
+#-------------------------------------------------------------------------------------------
+
+#---- Busca los objetos que tengan un color dentro del rango definido ----------------------
 def BuscarColor(frame):
     
     # Rango de color amarillo en formato HSV
@@ -38,7 +46,8 @@ def BuscarColor(frame):
 
     return elem
 
-# Evalua la interseccion en las mascaras para saber si hay colision
+#---- Evalua la interseccion en las mascaras para saber si hay colision -----------------------------
+
 def IntersectionMasks(frame, faces, ball):
     
     # Se definen las máscaras
