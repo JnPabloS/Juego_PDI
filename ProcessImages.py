@@ -1,37 +1,44 @@
 import cv2
 import numpy as np
 
-
+# Busca los objetos que tengan un color dentro del rango definido
 def BuscarColor(frame):
     
     # Rango de color amarillo en formato HSV
     lower = np.array([20, 100, 100])
     upper = np.array([30, 255, 255])
+    
     elem = []
+    
     # Convertir el fotograma a HSV
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     # Aplicar la máscara para filtrar el color amarillo
     mask = cv2.inRange(hsv, lower, upper)
+    #cv2.imshow("2", mask)
 
     # Aplicar una operación de erosión y dilatación para eliminar el ruido
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
-    mask = cv2.erode(mask, kernel, iterations=2)
-    mask = cv2.dilate(mask, kernel, iterations=2)
+    ee = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+    mask = cv2.erode(mask, ee, iterations=2)
+    #cv2.imshow("3", mask)
+    
+    mask = cv2.dilate(mask, ee, iterations=5)
+    #cv2.imshow("4", mask)
 
     # Encontrar los contornos del objeto amarillo
-    contours = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    
     for contour in contours:
         area = cv2.contourArea(contour)
         if area > 2000:
             x, y, w, h = cv2.boundingRect(contour)
+            cv2.rectangle(frame, (x , y), (x + w, y + h), (0, 255, 255), 2)
             #cv2.rectangle(frame, (x + int(w / 12), y + int(h / 8)), (x + int(w * 11 / 12), y + int(h * 2 / 8)), (0, 255, 255), 2)
             elem.append((x, y, w, h))
 
     return elem
 
+# Evalua la interseccion en las mascaras para saber si hay colision
 def IntersectionMasks(frame, faces, ball):
     
     # Se definen las máscaras
@@ -51,15 +58,11 @@ def IntersectionMasks(frame, faces, ball):
         y_bmask = int(ball.y + ball.radius + 3)
         
         #cv2.rectangle(frame,(x1_fmask, y1_fmask),(x2_fmask, y2_fmask),(0, 255, 0),1)
-        detectado = True
         
         # Se crean las máscaras
         cv2.circle(ball_mask,(x_bmask, y_bmask),ball.radius ,255 , -1)
         cv2.rectangle(face_mask, (x1_fmask, y1_fmask),(x2_fmask, y2_fmask),255,-1)
         face_mask = cv2.flip(face_mask, 1)
-        
-    else:
-        detectado = False
 
     colision = cv2.bitwise_and(face_mask, face_mask, mask=ball_mask)
     
